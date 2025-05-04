@@ -1,2 +1,4 @@
 *.exe
 *.gpi
+./input.txt
+./output.txt
