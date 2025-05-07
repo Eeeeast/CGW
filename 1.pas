@@ -12,10 +12,11 @@ VAR
 BEGIN
   InitTree(Root);
 
-  ASSIGN(InFile, 'input.txt');
+  ASSIGN(InFile, 'book-war-and-peace.txt');
   ASSIGN(OutFile, 'output.txt');
 
   RESET(InFile);
+  REWRITE(OutFile);
   REWRITE(TempFile);
   Scrub(InFile, TempFile);
   CLOSE(InFile);
@@ -23,7 +24,6 @@ BEGIN
   RESET(TempFile);
   ProcessText(TempFile, Root);
 
-  REWRITE(OutFile);
   TraverseAndPrint(Root, OutFile);
   CLOSE(OutFile);
 
