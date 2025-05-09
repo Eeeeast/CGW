@@ -1,10 +1,20 @@
 PROGRAM WordCounter(INPUT, OUTPUT);
 
 USES
-  Counter,
-  Tree;
+  WordCounter;
+
+VAR
+  F: TEXT;
 
 BEGIN
-  CountWords('input.txt');
-  PrintTree('output.txt')
+  ASSIGN(F, 'input.txt');
+  RESET(F);
+  WHILE NOT EOF(F)
+  DO
+    CountWord(ReadWord(F));
+  CLOSE(F);
+  ASSIGN(F, 'output.txt');
+  REWRITE(F);
+  PrintWordsList(F);
+  CLOSE(F)
 END.

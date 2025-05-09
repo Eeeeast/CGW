@@ -2,20 +2,20 @@ UNIT Tree;
 
 INTERFACE
 
+USES
+  Alphabet;
+
 TYPE
   Str255 = STRING[255];
   PTreeNode = ^TTreeNode;
   TTreeNode = RECORD
                 Word: Str255;
-                Count: integer;
+                Count: INTEGER;
                 Left, Right: PTreeNode
               END;
 
-VAR
-  Root: PTreeNode;
-
-PROCEDURE PrintTree(FileName: STRING);
-FUNCTION CreateNode(CONST Word: Str255): PTreeNode;
+PROCEDURE PrintTree(Root: PTreeNode; VAR F: TEXT);
+PROCEDURE InsertNode(VAR Root: PTreeNode; CONST Word: Str255);
 
 IMPLEMENTATION
 
@@ -31,31 +31,41 @@ BEGIN
   CreateNode := Root
 END;
 
-PROCEDURE PrintTreeReverse(Root: PTreeNode; VAR F: TEXT);
+PROCEDURE InsertNode(VAR Root: PTreeNode; CONST Word: Str255);
 BEGIN
-  IF Root <> NIL
+  IF Root = NIL
   THEN
-    BEGIN
-      PrintTreeReverse(Root^.Left, F);
-      WRITELN(F, Root^.Word, ' ', Root^.Count);
-      PrintTreeReverse(Root^.Right, F)
+    Root := CreateNode(Word)
+  ELSE
+    CASE CompareStr(Word, Root^.Word)
+    OF
+      Lower: InsertNode(Root^.Left, Word);
+      Equal: Root^.Count := Root^.Count + 1;
+      Higher: InsertNode(Root^.Right, Word)
     END
 END;
 
-PROCEDURE PrintTree(FileName: STRING);
-VAR
-  F: TEXT;
+PROCEDURE PrintTree(Root: PTreeNode; VAR F: TEXT);
 BEGIN
-  ASSIGN(F, FileName);
-  REWRITE(F);
   IF Root <> NIL
   THEN
     BEGIN
-      PrintTreeReverse(Root^.Left, F);
+      PrintTree(Root^.Left, F);
       WRITELN(F, Root^.Word, ' ', Root^.Count);
-      PrintTreeReverse(Root^.Right, F)
-    END;
-  CLOSE(F)
+      PrintTree(Root^.Right, F)
+    END
+END;
+
+PROCEDURE DestroyTree(VAR Root: PTreeNode);
+BEGIN
+  IF Root <> NIL
+  THEN
+    BEGIN
+      DestroyTree(Root^.Left);
+      DestroyTree(Root^.Right);
+      DISPOSE(Root);
+      Root := NIL
+    END
 END;
 
 END.
