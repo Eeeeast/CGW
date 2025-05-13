@@ -53,4 +53,6 @@ BEGIN
   PrintTree(Root, F)
 END;
 
+BEGIN
+  Root := NIL;
 END.
