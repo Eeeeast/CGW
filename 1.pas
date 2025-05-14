@@ -4,17 +4,14 @@ USES
   WordCounter;
 
 VAR
-  F: TEXT;
+  InputFile, OutputFile: TEXT;
 
 BEGIN
-  ASSIGN(F, 'input.txt');
-  RESET(F);
-  WHILE NOT EOF(F)
-  DO
-    CountWord(ReadWord(F));
-  CLOSE(F);
-  ASSIGN(F, 'output.txt');
-  REWRITE(F);
-  PrintWordsList(F);
-  CLOSE(F)
+  ASSIGN(InputFile, 'input.txt');
+  ASSIGN(OutputFile, 'output.txt');
+  RESET(InputFile);
+  REWRITE(OutputFile);
+  GroupWords(InputFile, OutputFile);
+  CLOSE(InputFile);
+  CLOSE(OutputFile)
 END.

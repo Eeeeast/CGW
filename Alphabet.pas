@@ -2,6 +2,14 @@ UNIT Alphabet;
 
 INTERFACE
 
+TYPE
+  TComparisonResult = (Lower, Equal, Higher);
+
+FUNCTION Scrub(Ch: CHAR): CHAR;
+FUNCTION CompareStr(S1, S2: STRING): TComparisonResult;
+
+IMPLEMENTATION
+
 CONST
   InvalidPos = -1;
   AlphabetUpper: ARRAY[0..25] OF CHAR = (
@@ -29,14 +37,6 @@ CONST
   SpecialSymbol: ARRAY[0..0] OF CHAR = (
     '-'
   );
-
-TYPE
-  TComparisonResult = (Lower, Equal, Higher);
-
-FUNCTION Scrub(Ch: CHAR): CHAR;
-FUNCTION CompareStr(S1, S2: STRING): TComparisonResult;
-
-IMPLEMENTATION
 
 FUNCTION IsIn(Ch: CHAR; Arr: ARRAY OF CHAR; VAR Pos: INTEGER): BOOLEAN;
 VAR

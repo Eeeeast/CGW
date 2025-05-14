@@ -6,16 +6,11 @@ USES
   Alphabet,
   Tree;
 
-FUNCTION ReadWord(VAR F: TEXT): Str255;
-PROCEDURE CountWord(CONST Word: Str255);
-PROCEDURE PrintWordsList(VAR F: TEXT);
+PROCEDURE GroupWords(VAR InputFile, OutputFile: TEXT);
 
 IMPLEMENTATION
 
-VAR
-  Root: PTreeNode;
-
-FUNCTION ReadWord(VAR F: TEXT): Str255;
+PROCEDURE ReadWord(VAR F: TEXT; VAR Word: Str255);
 VAR
   Ch: CHAR;
   CurrentWord: Str255;
@@ -38,21 +33,52 @@ BEGIN
       THEN
         CurrentWord := CurrentWord + Ch
     END;
-  ReadWord := CurrentWord
+  Word := CurrentWord
 END;
 
-PROCEDURE CountWord(CONST Word: Str255);
+FUNCTION IsValidWord(VAR Word: Str255): BOOLEAN;
+VAR
+  I: INTEGER;
 BEGIN
-  IF Word <> ''
+  IsValidWord := FALSE;
+  I := 1;
+  WHILE I <= LENGTH(Word)
+  DO
+    BEGIN
+      IF Word[I] <> '-'
+      THEN
+        IsValidWord := TRUE;
+      I := I + 1
+    END;
+  IF Word = ''
   THEN
-    InsertNode(Root, Word)
+    IsValidWord := FALSE
 END;
 
-PROCEDURE PrintWordsList(VAR F: TEXT);
+PROCEDURE CountWord(VAR Word: Str255);
 BEGIN
-  PrintTree(Root, F)
+  IF IsValidWord(Word)
+  THEN
+    InsertWord(Word)
 END;
 
+PROCEDURE GroupWords(VAR InputFile, OutputFile: TEXT);
+VAR
+  Unique, All: INTEGER;
+  Word: Str255;
 BEGIN
-  Root := NIL;
+  RESET(InputFile);
+  WHILE NOT EOF(InputFile)
+  DO
+    BEGIN
+      ReadWord(InputFile, Word);
+      CountWord(Word)
+    END;
+  WordCount(Unique, All);
+  REWRITE(OutputFile);
+  WRITELN(OutputFile, 'Unique words ', Unique);
+  WRITELN(OutputFile, 'Total words ', All);
+  SaveToFile(OutputFile)
+END;
+
 END.
