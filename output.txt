@@ -1,5 +1,6 @@
-Unique words 3
-Total words 3
-≈À » 1
-®À » 1
-®À‹ 1
+Unique words 4
+Total words 6
+TOTAL 1
+UNIQUE 2
+WORDS 2
+≈À‹ 1
