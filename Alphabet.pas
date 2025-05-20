@@ -21,8 +21,7 @@ END;
 
 FUNCTION FindPosition(Ch: CHAR): INTEGER;
 BEGIN
-  Ch := Scrub(Ch);
-  FindPosition := CharOrder[Ch]
+  FindPosition := CharOrder[Scrub(Ch)]
 END;
 
 FUNCTION CompareStr(S1, S2: STRING): TComparisonResult;
@@ -60,7 +59,7 @@ CONST
   );
   AlphabetLower: ARRAY[0..25] OF CHAR = (
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-	'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
   );
   CyrillicUpper: ARRAY[0..32] OF CHAR = (
     CHR(192), CHR(193), CHR(194), CHR(195), CHR(196), CHR(197), CHR(168),

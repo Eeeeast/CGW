@@ -7,7 +7,7 @@ VAR
   InputFile, OutputFile: TEXT;
 
 BEGIN
-  ASSIGN(InputFile, 'input.txt');
+  ASSIGN(InputFile, 'book-war-and-peace-big.txt');
   ASSIGN(OutputFile, 'output.txt');
   RESET(InputFile);
   REWRITE(OutputFile);

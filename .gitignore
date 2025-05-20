@@ -1,4 +1,6 @@
 *.exe
 *.gpi
-./input.txt
-./output.txt
+input.txt
+output.txt
+book-war-and-peace.txt
+book-war-and-peace-big.txt
