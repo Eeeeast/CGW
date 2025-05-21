@@ -40,19 +40,10 @@ FUNCTION IsValidWord(VAR Word: Str255): BOOLEAN;
 VAR
   I: INTEGER;
 BEGIN
-  IsValidWord := FALSE;
-  I := 1;
-  WHILE I <= LENGTH(Word)
-  DO
-    BEGIN
-      IF Word[I] <> '-'
-      THEN
-        IsValidWord := TRUE;
-      I := I + 1
-    END;
-  IF Word = ''
+  IsValidWord := TRUE;
+  IF (LENGTH(Word) > 2) AND ((Word[1] = '-') OR (Word[LENGTH(Word)] = '-')) OR (Word = '')
   THEN
-    IsValidWord := FALSE
+    IsValidWord := FALSE;
 END;
 
 PROCEDURE CountWord(VAR Word: Str255);

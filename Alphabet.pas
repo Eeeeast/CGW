@@ -21,7 +21,7 @@ END;
 
 FUNCTION FindPosition(Ch: CHAR): INTEGER;
 BEGIN
-  FindPosition := CharOrder[Scrub(Ch)]
+  FindPosition := CharOrder[Ch]
 END;
 
 FUNCTION CompareStr(S1, S2: STRING): TComparisonResult;
