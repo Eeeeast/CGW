@@ -25,6 +25,7 @@ TYPE
 
 VAR
   Root: PTreeNode;
+  UniqueWords, AllWords: INTEGER;
 
 FUNCTION CreateNode(CONST Word: Str255; Count: INTEGER): PTreeNode;
 VAR
@@ -35,6 +36,8 @@ BEGIN
   Root^.Count := Count;
   Root^.Left := NIL;
   Root^.Right := NIL;
+  UniqueWords := UniqueWords + 1;
+  AllWords := AllWords + Count;
   CreateNode := Root
 END;
 
@@ -47,7 +50,11 @@ BEGIN
     CASE CompareStr(Word, Root^.Word)
     OF
       Lower: InsertNode(Root^.Left, Word, Count);
-      Equal: Root^.Count := Root^.Count + Count;
+      Equal:
+        BEGIN
+          Root^.Count := Root^.Count + Count;
+          AllWords := AllWords + Count
+        END;
       Higher: InsertNode(Root^.Right, Word, Count)
     END
 END;
@@ -68,11 +75,6 @@ BEGIN
     END
 END;
 
-PROCEDURE SaveToFile(VAR F: TEXT);
-BEGIN
-  PrintTree(Root, F)
-END;
-
 PROCEDURE DestroyTree(VAR Root: PTreeNode);
 BEGIN
   IF Root <> NIL
@@ -85,13 +87,25 @@ BEGIN
     END
 END;
 
+PROCEDURE Clear;
+BEGIN
+  DestroyTree(Root);
+  UniqueWords := 0;
+  AllWords := 0
+END;
+
+PROCEDURE SaveToFile(VAR F: TEXT);
+BEGIN
+  PrintTree(Root, F);
+  Clear
+END;
+
 PROCEDURE LoadFromFile(VAR F: TEXT);
 VAR
   Ch: CHAR;
   Word: Str255;
   Count: INTEGER;
 BEGIN
-  DestroyTree(Root);
   WHILE NOT EOF(F)
   DO
     BEGIN
@@ -115,25 +129,14 @@ BEGIN
     END
 END;
 
-PROCEDURE TreeWordCount(VAR Root: PTreeNode; VAR Unique, All: INTEGER);
-BEGIN
-  IF Root <> NIL
-  THEN
-    BEGIN
-      Unique := Unique + 1;
-      All := All + Root^.Count;
-      TreeWordCount(Root^.Left, Unique, All);
-      TreeWordCount(Root^.Right, Unique, All)
-    END
-END;
-
 PROCEDURE WordCount(VAR Unique, All: INTEGER);
 BEGIN
-  Unique := 0;
-  All := 0;
-  TreeWordCount(Root, Unique, All)
+  Unique := UniqueWords;
+  All := AllWords
 END;
 
 BEGIN
-  Root := NIL
+  Root := NIL;
+  UniqueWords := 0;
+  AllWords := 0
 END.

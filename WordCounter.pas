@@ -6,7 +6,7 @@ USES
   Alphabet,
   Tree;
 
-PROCEDURE GroupWords(VAR InputFile, OutputFile: TEXT);
+PROCEDURE GroupWords(VAR InputFile, OutputFile, TempFile: TEXT);
 
 IMPLEMENTATION
 
@@ -62,7 +62,7 @@ BEGIN
     InsertWord(Word)
 END;
 
-PROCEDURE GroupWords(VAR InputFile, OutputFile: TEXT);
+PROCEDURE GroupWords(VAR InputFile, OutputFile, TempFile: TEXT);
 VAR
   Unique, All: INTEGER;
   Word: Str255;
@@ -72,10 +72,16 @@ BEGIN
   DO
     BEGIN
       ReadWord(InputFile, Word);
-      CountWord(Word)
+      CountWord(Word);
+      WordCount(Unique, All);
+      IF Unique = 10000
+      THEN
+        SaveToFile(TempFile)
     END;
-  WordCount(Unique, All);
+  RESET(TempFile);
+  LoadFromFile(TempFile);
   REWRITE(OutputFile);
+  WordCount(Unique, All);
   WRITELN(OutputFile, 'Unique words ', Unique);
   WRITELN(OutputFile, 'Total words ', All);
   SaveToFile(OutputFile)
