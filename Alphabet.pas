@@ -3,10 +3,10 @@ UNIT Alphabet;
 INTERFACE
 
 TYPE
-  TComparisonResult = (Lower, Equal, Higher);
+  TComparisonResult = (crLower, crEqual, crHigher);
 
 FUNCTION Scrub(Ch: CHAR): CHAR;
-FUNCTION CompareStr(S1, S2: STRING): TComparisonResult;
+FUNCTION CompareStrings(S1, S2: STRING): TComparisonResult;
 
 IMPLEMENTATION
 
@@ -19,35 +19,35 @@ BEGIN
   Scrub := CharMap[Ch]
 END;
 
-FUNCTION FindPosition(Ch: CHAR): INTEGER;
+FUNCTION GetCharPosition(Ch: CHAR): INTEGER;
 BEGIN
-  FindPosition := CharOrder[Ch]
+  GetCharPosition := CharOrder[Ch]
 END;
 
-FUNCTION CompareStr(S1, S2: STRING): TComparisonResult;
+FUNCTION CompareStrings(S1, S2: STRING): TComparisonResult;
 VAR
-  Compare, I: INTEGER;
+  I, CompareResult: INTEGER;
 BEGIN
-  Compare := 0;
+  CompareResult := 0;
   I := 1;
-  WHILE (I <= LENGTH(S1)) AND (I <= LENGTH(S2)) AND (Compare = 0)
+  WHILE (I <= LENGTH(S1)) AND (I <= LENGTH(S2)) AND (CompareResult = 0)
   DO
     BEGIN
-      Compare := FindPosition(S1[I]) - FindPosition(S2[I]);
+      CompareResult := GetCharPosition(S1[I]) - GetCharPosition(S2[I]);
       I := I + 1
     END;
-  IF Compare = 0
+  IF CompareResult = 0
   THEN
-    Compare := LENGTH(S1) - LENGTH(S2);
-  IF Compare < 0
+    CompareResult := LENGTH(S1) - LENGTH(S2);
+  IF CompareResult < 0
   THEN
-    CompareStr := Lower
+    CompareStrings := crLower
   ELSE
-    IF Compare = 0
+    IF CompareResult = 0
     THEN
-      CompareStr := Equal
+      CompareStrings := crEqual
     ELSE
-      CompareStr := Higher
+      CompareStrings := crHigher
 END;
 
 PROCEDURE InitializeTables;
